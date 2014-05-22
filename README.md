@@ -11,4 +11,8 @@ Other ideas?
 * Gif generator
 * Time lapse generator
 
-Thanks to yacc for creating this API in the firat place!
+Thanks to [Yacin][yacc] for [creating this API][tutorial] in the first place! 
+
+
+[tutorial]: http://yacc.github.io/sensrapi-tutorials/
+[yacc]: http://www.linkedin.com/in/yacinbahi
