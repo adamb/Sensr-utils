@@ -72,7 +72,7 @@ begin
   day =  c.day(date)
   day["day"]["hours"].each do |hour|
     time = hour["hour"]["epoch_time"]
-    c.hour(time)["hour"]["images"].each { |i| puts "wget #{i['url']}" }
+    c.hour(time)["hour"]["images"].each { |i| puts "wget #{i['url']} -O #{Time.at(i['taken_at']).to_s.gsub(/\s/,'+')}.jpg" }
   end
 
 end
