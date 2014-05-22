@@ -66,11 +66,12 @@ begin
   optparse.parse!
   puts "Verbose debug on ..." if options[:verbose]
   
-  
+  # use camera 88 if none provided, it's public
+  options[:camera] = 88 if options[:camera].nil?
+  cam_id = options[:camera]
 
-  target_camera     = ARGV[0].to_i
+  c = Sensr::Camera.find(cam_id)
 
-  c = Sensr::Camera.find(5)
 
   day =  c.day(Time.now.to_i)
   day["day"]["hours"].each do |hour|
