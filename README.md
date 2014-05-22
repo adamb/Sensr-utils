@@ -26,7 +26,8 @@ The output would look something like this:
     ....
 
 To actually grab all these images, you'll have to cut and paste the output into a terminal and it will grab the images from S3 and 
-store them into files names with the time and date that they were taken.
+store them into files names with the time and date that they were taken. Next step would be to add an option for the script to 
+download the files directly, but for now this will work.
 
 ## Other ideas?
 
