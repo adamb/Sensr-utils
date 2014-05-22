@@ -29,6 +29,36 @@ To actually grab all these images, you'll have to cut and paste the output into 
 store them into files names with the time and date that they were taken. Next step would be to add an option for the script to 
 download the files directly, but for now this will work.
 
+### Improvements for get-images.rb
+
+* Not require the user to have their own token, but get it with a password
+* Grab the favorites from a camera
+* Grab the clips from a camera
+
+## get-latest.rb
+
+If you want to find the latest JPEG image that has been uploaded or the MJPEG stream for a given camera, this will find it.
+Note that these URLs change occasionally and without warning, mainly for load balancing. You could use the `--image` URL to give 
+to [Weather Underground][wundercam].
+
+	$ ruby get-latest.rb  --help
+	Usage: get-latest [options]
+	    -i, --image                      Return URL for the latest image
+	    -s, --stream                     Return URL for the MJPEG stream
+	    -c, --cam n                      Camera id [n]
+	    -v, --verbose                    Output more information (debug)
+	    -h, --help                       display this help
+
+Here's an example that returns the latest image and stream for camera 88.
+
+	$ ruby get-latest.rb  --image --stream --cam 88
+	http://fxp6.sensr.net/latest/3aee7a35b90f64749d7634e0366b5170553a0787
+	http://fxp6.sensr.net/stream/3aee7a35b90f64749d7634e0366b5170553a0787
+
+**Warning** these URLs are only protected by the random URL. If you give it out, it will work _even for private cameras._ So be careful 
+where you place the URLs once you discover them!
+
+
 ## Other ideas?
 
 * Gif generator
@@ -41,3 +71,4 @@ Thanks to [Yacin][yacc] for [creating this API][tutorial] in the first place!
 
 [tutorial]: http://yacc.github.io/sensrapi-tutorials/
 [yacc]: http://www.linkedin.com/in/yacinbahi
+[wundercam]: http://www.wunderground.com/webcams/signup.html#addcam
