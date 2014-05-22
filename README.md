@@ -63,7 +63,7 @@ where you place the URLs once you discover them!
 
 * Gif generator
 * Time lapse generator
-* Create a [Weather Underground][wudnercam] link for a camera that doesn't change
+* Create a [Weather Underground][wundercam] link for a camera that doesn't change
 
 
 Thanks to [Yacin][yacc] for [creating this API][tutorial] in the first place! 
