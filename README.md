@@ -55,7 +55,7 @@ Here's an example that returns the latest image and stream for camera 88.
 	http://fxp6.sensr.net/latest/3aee7a35b90f64749d7634e0366b5170553a0787
 	http://fxp6.sensr.net/stream/3aee7a35b90f64749d7634e0366b5170553a0787
 
-**Warning** these URLs are only protected by the random URL. If you give it out, it will work _even for private cameras._ So be careful 
+**Warning:** these URLs are only protected by the random URL. If you give it out, it will work _even for private cameras._ So be careful 
 where you place the URLs once you discover them!
 
 
@@ -63,7 +63,7 @@ where you place the URLs once you discover them!
 
 * Gif generator
 * Time lapse generator
-* Create a Weather Underground link for a camera
+* Create a [Weather Underground][wudnercam] link for a camera that doesn't change
 
 
 Thanks to [Yacin][yacc] for [creating this API][tutorial] in the first place! 
