@@ -19,7 +19,7 @@ optparse = OptionParser.new do|opts|
       month = m[2]
       day = m[3]
 
-      options[:date] =  Time.utc(year,month,day).to_i
+      options[:date] =  Time.utc(year,month,day).to_i 
     else
       puts "Exception: Error in specified date '#{date}'. Exiting."
       exit
@@ -60,7 +60,7 @@ begin
   cam_id = options[:camera]
   
   # use today if no date
-  options[:date] = Time.now.to_i if options[:date].nil?
+  options[:date] = (Time.now - 86400).to_i if options[:date].nil?
   date = options[:date]
   
   if options[:verbose] then
