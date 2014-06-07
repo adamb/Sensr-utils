@@ -26,7 +26,16 @@ optparse = OptionParser.new do|opts|
     end
   end
   
-  
+  options[:dir] = nil
+  opts.on( '-P', '--directory-prefix name', 'directory destination for the output' ) do |dir| 
+    if m = dir.match(/[^\s+]/)
+      options[:dir] = dir
+    else
+      puts "Exception: Error in specified camera, must be an int '#{cam}'. Exiting."
+      exit
+    end
+  end
+    
   options[:camera] = nil
   opts.on( '-c', '--cam n', 'Camera id to pull images from [n]' ) do |cam| 
     if m = cam.match(/^(\d+)$/)
@@ -37,7 +46,6 @@ optparse = OptionParser.new do|opts|
       exit
     end
   end
-  
   
   options[:verbose] = false
   opts.on( '-v', '--verbose', 'Output more information (debug)' ) do
@@ -59,10 +67,14 @@ begin
   options[:camera] = 88 if options[:camera].nil?
   cam_id = options[:camera]
   
-  # use today if no date
+  # use yesterday if no date
   options[:date] = (Time.now - 86400).to_i if options[:date].nil?
   date = options[:date]
-  
+
+  # use the local dir if not specified
+  options[:dir] = '.' if options[:dir].nil?
+  dir = options[:dir]
+    
   if options[:verbose] then
     puts "finding images for camera #{cam_id} on day #{Time.at(date).to_datetime}"
   end
@@ -72,7 +84,7 @@ begin
   day =  c.day(date)
   day["day"]["hours"].each do |hour|
     time = hour["hour"]["epoch_time"]
-    c.hour(time)["hour"]["images"].each { |i| puts "wget #{i['url']} -O #{Time.at(i['taken_at']).to_s.gsub(/\s/,'+')}.jpg" }
+    c.hour(time)["hour"]["images"].each { |i| puts "wget -P #{options[:dir]} #{i['url']} -O #{Time.at(i['taken_at']).to_s.gsub(/\s/,'+')}.jpg" }
   end
 
 end
