@@ -61,12 +61,18 @@ optparse = OptionParser.new do|opts|
   end
 end
 
+# return a no clobber version of the name
+def no_clobber(name)
+  return name unless File.exists?(name)
+  (1..255).each { |v| n = "#{name}.#{v}"; return n unless File.exists?(n) }
+end
+
 # get the url and put it in the dir with the filename
 def wget(dir, url, fname)
   u = URI.parse(url)
   # create the directory if it doesn't exist
   FileUtils.mkdir_p(dir) unless File.exists?(dir)
-  fname = "#{dir}/#{fname}"
+  fname = no_clobber("#{dir}/#{fname}")
   begin
     f = File.open(fname, 'w') # TODO implement wget naming in case file exists...  foo.1 foo.2 ...
     Net::HTTP.start(u.host) do |http|
