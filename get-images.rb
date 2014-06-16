@@ -64,7 +64,7 @@ end
 # return a no clobber version of the name
 def no_clobber(name)
   return name unless File.exists?(name)
-  (1..255).each { |v| n = "#{name}.#{v}"; return n unless File.exists?(n) }
+  (1..255).each { |v| n = name.sub(/\.jpg$/,".#{v}.jpg"); return n unless File.exists?(n) }
 end
 
 # get the url and put it in the dir with the filename
