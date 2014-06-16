@@ -1,6 +1,9 @@
 require 'date'
 require 'optparse'
 require 'sensr'
+require 'fileutils'
+require 'net/http'
+require 'uri'
 require 'pp'
 
 # See http://yacc.github.io/sensrapi-tutorials/ for how to get a token
@@ -58,6 +61,27 @@ optparse = OptionParser.new do|opts|
   end
 end
 
+# get the url and put it in the dir with the filename
+def wget(dir, url, fname)
+  u = URI.parse(url)
+  # create the directory if it doesn't exist
+  FileUtils.mkdir_p(dir) unless File.exists?(dir)
+  fname = "#{dir}/#{fname}"
+  begin
+    f = File.open(fname, 'w') # TODO implement wget naming in case file exists...  foo.1 foo.2 ...
+    Net::HTTP.start(u.host) do |http|
+      http.request_get(u.path) do |resp|
+        resp.read_body do |segment|
+          f.write(segment)
+        end
+      end
+    end
+  ensure
+    f.close()
+  end
+
+end
+
 begin
   
   optparse.parse!
@@ -84,7 +108,7 @@ begin
   day =  c.day(date)
   day["day"]["hours"].each do |hour|
     time = hour["hour"]["epoch_time"]
-    c.hour(time)["hour"]["images"].each { |i| puts "wget -P #{options[:dir]} #{i['url']} -O #{Time.at(i['taken_at']).to_s.gsub(/\s/,'+')}.jpg" }
+    c.hour(time)["hour"]["images"].each { |i| wget(options[:dir],i['url'],"#{Time.at(i['taken_at']).to_s.gsub(/\s/,'+')}.jpg") }
   end
 
 end
