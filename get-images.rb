@@ -102,7 +102,7 @@ begin
   date = options[:date]
 
   # use the local dir if not specified
-  options[:dir] = '.' if options[:dir].nil?
+  options[:dir] = (Time.now - 86400).to_s.split[0] if options[:dir].nil?
   dir = options[:dir]
     
   if options[:verbose] then
