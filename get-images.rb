@@ -29,6 +29,20 @@ optparse = OptionParser.new do|opts|
     end
   end
   
+  options[:end_date] = nil
+  opts.on( '-e', '--end-date yyyy-mm-dd', 'Date grab the images through the date [year-month-day]' ) do |date| # TODO add optional month and day
+    if m = date.match(/^(\d{4})-(\d\d?)-(\d\d?)$/)
+      year = m[1]
+      month = m[2]
+      day = m[3]
+
+      options[:end_date] =  Time.utc(year,month,day).to_i 
+    else
+      puts "Exception: Error in specified date '#{date}'. Exiting."
+      exit
+    end
+  end
+  
   options[:dir] = nil
   opts.on( '-P', '--directory-prefix name', 'directory destination for the output' ) do |dir| 
     if m = dir.match(/[^\s+]/)
@@ -101,20 +115,26 @@ begin
   options[:date] = (Time.now - 86400).to_i if options[:date].nil?
   date = options[:date]
 
+
   # use the local dir if not specified
   options[:dir] = (Time.now - 86400).to_s.split[0] if options[:dir].nil?
   dir = options[:dir]
-    
+  
+  # set the end_date
+  end_date = options[:end_date]
+  
   if options[:verbose] then
     puts "finding images for camera #{cam_id} on day #{Time.at(date).to_datetime}"
   end
   
   c = Sensr::Camera.find(cam_id)
 
-  day =  c.day(date)
-  day["day"]["hours"].each do |hour|
-    time = hour["hour"]["epoch_time"]
-    c.hour(time)["hour"]["images"].each { |i| wget(options[:dir],i['url'],"#{Time.at(i['taken_at']).to_s.gsub(/\s/,'+')}.jpg") }
-  end
+  begin
+    day =  c.day(date)
+    day["day"]["hours"].each do |hour|
+      time = hour["hour"]["epoch_time"]
+      c.hour(time)["hour"]["images"].each { |i| wget(options[:dir],i['url'],"#{Time.at(i['taken_at']).to_s.gsub(/\s/,'+')}.jpg") }
+    end
+  end while (end_date && (date += 86400) <= end_date) 
 
 end
